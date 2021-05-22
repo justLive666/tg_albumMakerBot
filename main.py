@@ -49,7 +49,7 @@ def add_new_user(message):
 @bot.message_handler(commands=['start'])
 def start_bot(message):
 	add_new_user(message)
-	bot.send_message(message.chat.id, "Привет! Данный бот умеет делать медиа альбомы",
+	bot.send_message(message.chat.id, "Данный бот умеет делать медиа альбомы",
 					 parse_mode='html', reply_markup=markup)
 
 @bot.message_handler(commands=['stop'])
@@ -92,11 +92,11 @@ def bot_handler(message):
 					type TEXT
 					)""")
 			delete_values(message)
-			bot.send_message(message.chat.id, "Хорошо! Отправьте мне медиа файлы(фото/видео), из которых нужно сделать альбом\n\n<b>При отправке альбома, бот будет добавлять первый медиа файл этого альбома</b>",
+			bot.send_message(message.chat.id, "Отправь мне медиа файлы(фото/видео), из которых нужно сделать альбом\n\n<b>При отправке альбома, бот будет добавлять первый медиа файл этого альбома</b>",
 							 parse_mode='html')
 			bot.register_next_step_handler(message, handler_video)
 		else:
-			bot.send_message(message.chat.id, "No comments...", parse_mode='html', reply_markup=markup)
+			bot.send_message(message.chat.id, "...", parse_mode='html', reply_markup=markup)
 
 
 def user_has_media(message):
@@ -119,12 +119,12 @@ def handler_video(message):
 			sq = bd.cursor()
 			if message.video:
 				sq.execute(f"INSERT INTO user_values VALUES(?,?,?,?)",(message.chat.id,message.video.file_id,"","video"))
-				bot.send_message(message.chat.id, "Отлично! Отправьте следующий медиа файл или нажмите далее", parse_mode='html',
+				bot.send_message(message.chat.id, "Отправьте следующий медиа файл или нажмите далее", parse_mode='html',
 								 reply_markup=markup)
 				bot.register_next_step_handler(message, handler_video)
 			elif message.photo:
 				sq.execute(f"INSERT INTO user_values VALUES(?,?,?,?)",(message.chat.id,message.photo[0].file_id,"","photo"))
-				bot.send_message(message.chat.id, "Отлично! Отправьте следующий медиа файл или нажмите далее", parse_mode='html',
+				bot.send_message(message.chat.id, "Отправьте следующий медиа файл или нажмите далее", parse_mode='html',
 				reply_markup=markup)
 				bot.register_next_step_handler(message, handler_video)
 			else:
